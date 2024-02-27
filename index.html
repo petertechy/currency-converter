@@ -14,9 +14,9 @@
   </head>
   <body>
     <div
-      class="mx-auto col-7 border border-success my-5 rounded-3 shadow-sm p-3"
+      class="mx-auto col-8 col-md-8 col-sm-8  border border-success my-5 rounded-3 shadow-sm p-3"
     >
-      <h2 class="text-center text-success ms-5 me-5 display-4 fw-bold font">
+      <h2 class="text-center text-success fw-bold font media">
         Currency Converter
       </h2>
 
@@ -31,7 +31,7 @@
       </div>
 
       <div class="row justify-content-center gap-3 align-items-center mx-4">
-        <div class="col-4">
+        <div class="col-md-4 col-sm-12">
           <label class="form-label" for="fromCurrency">From Currency:</label>
           <select class="form-select" id="fromCurrency">
             <option value="NGN">NGN</option>
@@ -41,7 +41,7 @@
           </select>
         </div>
 
-        <div class="col-4">
+        <div class="col-md-4 col-sm-12">
           <label class="form-label" for="toCurrency">To Currency:</label>
           <select class="form-select" id="toCurrency">
             <option value="NGN">NGN</option>
@@ -54,7 +54,7 @@
 
       <div class="col-6 mx-auto mt-2 font">
         <button
-          class="btn btn-success form-control my-4 fs-5 shadow-sm"
+          class="btn btn-success form-control my-4 shadow-sm"
           onclick="convertCurrency()"
         >
           Convert

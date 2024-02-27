@@ -1,3 +1,8 @@
 .font{
     font-family: cursive;
 }
+@media  screen and (max-width: 769px) {
+    .media{
+        font-size: 16px;
+    }
+}
