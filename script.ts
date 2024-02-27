@@ -1,47 +1,115 @@
-function convertCurrency(){
-    const amountInput = document.getElementById("amount") as HTMLInputElement;
-const fromCurrencySelect = document.getElementById(
-  "fromCurrency"
-) as HTMLSelectElement;
-const toCurrencySelect = document.getElementById("toCurrency") as HTMLSelectElement;
-// const displayResult = document.getElementById("result") as HTMLParagraphElement;
-const displayResult = document.getElementById("result") as HTMLParagraphElement;
+let exchangeRatesCache: Record<string, number> | null = null;
 
-const amount = parseFloat(amountInput.value);
-const fromCurrency = fromCurrencySelect.value;
-const toCurrency = toCurrencySelect.value;
+async function getExchangeRates(): Promise<Record<string, number>> {
+  if (exchangeRatesCache) {
+    return exchangeRatesCache;
+  }
 
-console.log("I am here")
+  const apiKey = "fe774662efe27ae56cab269e";
+  const req_url =
+    "https://v6.exchangerate-api.com/v6/fe774662efe27ae56cab269e/latest/USD";
+
+  const response = await fetch(req_url, {
+    headers: {
+      Authorization: apiKey,
+    },
+  });
+  const exchangeRateData = await response.json();
+
+  if (exchangeRateData.result === "success") {
+    exchangeRatesCache = exchangeRateData.conversion_rates;
+    return exchangeRatesCache!;
+  } else {
+    throw new Error("Error fetching exchange rates. Please try again later.");
+  }
 }
 
+async function convertCurrency(): Promise<void> {
+  try {
+    const exchangeRates = await getExchangeRates();
 
+    const amountInput = document.getElementById("amount") as HTMLInputElement;
+    const fromCurrencySelect = document.getElementById(
+      "fromCurrency"
+    ) as HTMLSelectElement;
+    const toCurrencySelect = document.getElementById(
+      "toCurrency"
+    ) as HTMLSelectElement;
+    const displayResult = document.getElementById(
+      "result"
+    ) as HTMLParagraphElement;
+
+    const amount = parseFloat(amountInput.value);
+    const fromCurrency = fromCurrencySelect.value;
+    const toCurrency = toCurrencySelect.value;
+
+    // Check if the exchange rates are available
+    if (!exchangeRates) {
+      throw new Error("Exchange rates not available.");
+    }
+
+    // Update the fromCurrency dropdown options
+    let fromCurrencyOptions = "";
+    for (const currency of Object.keys(exchangeRates)) {
+      fromCurrencyOptions += `<option value="${currency}">${currency}</option>`;
+    }
+    fromCurrencySelect.innerHTML = fromCurrencyOptions;
+
+    // Update the toCurrency dropdown options
+    let toCurrencyOptions = "";
+    for (const currency of Object.keys(exchangeRates)) {
+      toCurrencyOptions += `<option value="${currency}">${currency}</option>`;
+    }
+    toCurrencySelect.innerHTML = toCurrencyOptions;
+
+    const rateFrom = exchangeRates[fromCurrency];
+    const rateTo = exchangeRates[toCurrency];
+
+    // Perform the conversion
+    const convertedAmount = (amount / rateFrom) * rateTo;
+
+    // Display the result
+    displayResult.innerText = `${amount} ${fromCurrency} is equal to ${convertedAmount.toFixed(2)} ${toCurrency}`;
+  } catch (error) {
+    // Handle error
+    console.error((error as Error).message);
+  }
+}
+
+// Call convertCurrency function when needed
+convertCurrency();
+
+  
+  // Call the convertCurrency function when needed, for example, when a button is clicked
+  // const convertButton = document.getElementById("convertButton");
+  // convertButton.addEventListener("click", convertCurrency);
+  
 //enum
 
-
-enum Status{
-    approved = "approved", 
-    rejected = "rejected"
+enum Status {
+  approved = "approved",
+  rejected = "rejected",
 }
 
-interface Employee{
-    name: string,
-    age: number,
-    height?: number,
-    maritalStatus?: string
+interface Employee {
+  name: string;
+  age: number;
+  height?: number;
+  maritalStatus?: string;
 }
-let employee:Employee = {
-    name: "700",
-    age: 5,
-  
-    maritalStatus:""
-}
+let employee: Employee = {
+  name: "700",
+  age: 5,
 
-let something: string= Status.approved
+  maritalStatus: "",
+};
 
-let number: number = 900
+let something: string = Status.approved;
 
-let seniorEm: Employee & {rank :string} ={
-    name: "Hello",
-    age: 70,
-    rank: "boss"
-}
+let number: number = 900;
+
+let seniorEm: Employee & { rank: string } = {
+  name: "Hello",
+  age: 70,
+  rank: "boss",
+};
