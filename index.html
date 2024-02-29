@@ -13,14 +13,18 @@
     />
   </head>
   <body>
+    <div id="toast" class="hidden">
+      <p id="toastMessage"></p>
+    </div>
+    
     <div
-      class="mx-auto col-8 col-md-8 col-sm-8  border border-success my-5 rounded-3 shadow-sm p-3"
+      class="mx-auto col-8 col-md-8 col-sm-8  my-lg-5 my-sm-4 my-md-4 my-4 rounded-3 shadow-sm p-3"
     >
       <h2 class="text-center text-success fw-bold font media">
         Currency Converter
       </h2>
 
-      <div class="col-6 mx-auto">
+      <div class="col-8 col-md-8 col-sm-10 mx-auto">
         <label class="form-label fs-5" for="amount">Amount:</label>
         <input
           class="form-control mb-4"
@@ -31,7 +35,7 @@
       </div>
 
       <div class="row justify-content-center gap-3 align-items-center mx-4">
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-8">
           <label class="form-label" for="fromCurrency">From Currency:</label>
           <select class="form-select" id="fromCurrency">
             <option value="NGN">NGN</option>
@@ -41,7 +45,7 @@
           </select>
         </div>
 
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-8">
           <label class="form-label" for="toCurrency">To Currency:</label>
           <select class="form-select" id="toCurrency">
             <option value="NGN">NGN</option>
@@ -60,7 +64,7 @@
           Convert
         </button>
       </div>
-      <p class="text-center" id="result">Display Result:</p>
+      <p class="text-center fs-2 font my-2 p-2" id="result">Display Result Here!</p>
     </div>
 
     <script src="script.js"></script>

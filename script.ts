@@ -24,7 +24,45 @@ async function getExchangeRates(): Promise<Record<string, number>> {
   }
 }
 
-async function convertCurrency(): Promise<void> {
+async function displayCurrencyOptions() {
+  try {
+    const exchangeRates = await getExchangeRates();
+
+    const fromCurrencySelect = document.getElementById(
+      "fromCurrency"
+    ) as HTMLSelectElement;
+    const toCurrencySelect = document.getElementById(
+      "toCurrency"
+    ) as HTMLSelectElement;
+
+    // Check if the exchange rates are available
+    if (!exchangeRates) {
+      throw new Error("Exchange rates not available.");
+    }
+
+    // Update the fromCurrency dropdown options
+    let fromCurrencyOptions = "";
+    const currencies = Object.keys(exchangeRates);
+
+    for (let i = 0; i < currencies.length; i++) {
+      const currency = currencies[i];
+      fromCurrencyOptions += `<option value="${currency}">${currency}</option>`;
+    }
+
+    fromCurrencySelect.innerHTML = fromCurrencyOptions;
+
+    // Update the toCurrency dropdown options
+    let toCurrencyOptions = "";
+    for (const currency of Object.keys(exchangeRates)) {
+      toCurrencyOptions += `<option value="${currency}">${currency}</option>`;
+    }
+    toCurrencySelect.innerHTML = toCurrencyOptions;
+  } catch (error) {
+    console.error((error as Error).message);
+  }
+}
+
+async function convertCurrency() {
   try {
     const exchangeRates = await getExchangeRates();
 
@@ -48,20 +86,6 @@ async function convertCurrency(): Promise<void> {
       throw new Error("Exchange rates not available.");
     }
 
-    // Update the fromCurrency dropdown options
-    let fromCurrencyOptions = "";
-    for (const currency of Object.keys(exchangeRates)) {
-      fromCurrencyOptions += `<option value="${currency}">${currency}</option>`;
-    }
-    fromCurrencySelect.innerHTML = fromCurrencyOptions;
-
-    // Update the toCurrency dropdown options
-    let toCurrencyOptions = "";
-    for (const currency of Object.keys(exchangeRates)) {
-      toCurrencyOptions += `<option value="${currency}">${currency}</option>`;
-    }
-    toCurrencySelect.innerHTML = toCurrencyOptions;
-
     const rateFrom = exchangeRates[fromCurrency];
     const rateTo = exchangeRates[toCurrency];
 
@@ -71,13 +95,13 @@ async function convertCurrency(): Promise<void> {
     // Display the result
     displayResult.innerText = `${amount} ${fromCurrency} is equal to ${convertedAmount.toFixed(2)} ${toCurrency}`;
   } catch (error) {
-    // Handle error
     console.error((error as Error).message);
   }
 }
 
-// Call convertCurrency function when needed
-convertCurrency();
+// Call displayCurrencyOptions to initialize dropdown options
+displayCurrencyOptions();
+
 
   
   // Call the convertCurrency function when needed, for example, when a button is clicked

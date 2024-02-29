@@ -31,6 +31,36 @@ function getExchangeRates() {
         }
     });
 }
+function displayCurrencyOptions() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const exchangeRates = yield getExchangeRates();
+            const fromCurrencySelect = document.getElementById("fromCurrency");
+            const toCurrencySelect = document.getElementById("toCurrency");
+            // Check if the exchange rates are available
+            if (!exchangeRates) {
+                throw new Error("Exchange rates not available.");
+            }
+            // Update the fromCurrency dropdown options
+            let fromCurrencyOptions = "";
+            const currencies = Object.keys(exchangeRates);
+            for (let i = 0; i < currencies.length; i++) {
+                const currency = currencies[i];
+                fromCurrencyOptions += `<option value="${currency}">${currency}</option>`;
+            }
+            fromCurrencySelect.innerHTML = fromCurrencyOptions;
+            // Update the toCurrency dropdown options
+            let toCurrencyOptions = "";
+            for (const currency of Object.keys(exchangeRates)) {
+                toCurrencyOptions += `<option value="${currency}">${currency}</option>`;
+            }
+            toCurrencySelect.innerHTML = toCurrencyOptions;
+        }
+        catch (error) {
+            console.error(error.message);
+        }
+    });
+}
 function convertCurrency() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -46,18 +76,6 @@ function convertCurrency() {
             if (!exchangeRates) {
                 throw new Error("Exchange rates not available.");
             }
-            // Update the fromCurrency dropdown options
-            let fromCurrencyOptions = "";
-            for (const currency of Object.keys(exchangeRates)) {
-                fromCurrencyOptions += `<option value="${currency}">${currency}</option>`;
-            }
-            fromCurrencySelect.innerHTML = fromCurrencyOptions;
-            // Update the toCurrency dropdown options
-            let toCurrencyOptions = "";
-            for (const currency of Object.keys(exchangeRates)) {
-                toCurrencyOptions += `<option value="${currency}">${currency}</option>`;
-            }
-            toCurrencySelect.innerHTML = toCurrencyOptions;
             const rateFrom = exchangeRates[fromCurrency];
             const rateTo = exchangeRates[toCurrency];
             // Perform the conversion
@@ -66,13 +84,12 @@ function convertCurrency() {
             displayResult.innerText = `${amount} ${fromCurrency} is equal to ${convertedAmount.toFixed(2)} ${toCurrency}`;
         }
         catch (error) {
-            // Handle error
             console.error(error.message);
         }
     });
 }
-// Call convertCurrency function when needed
-convertCurrency();
+// Call displayCurrencyOptions to initialize dropdown options
+displayCurrencyOptions();
 // Call the convertCurrency function when needed, for example, when a button is clicked
 // const convertButton = document.getElementById("convertButton");
 // convertButton.addEventListener("click", convertCurrency);

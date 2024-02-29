@@ -1,8 +1,33 @@
 .font{
     font-family: cursive;
 }
+.media{
+    font-size: 26px;
+}
 @media  screen and (max-width: 769px) {
     .media{
-        font-size: 16px;
+        font-size: 20px;
     }
 }
+body{
+    background: linear-gradient(rgba(255, 255, 255, 0.684), rgba(255, 255, 255, 0.607), rgba(255, 255, 255, 0.667)), url("./media/money.jpg");
+    background-position: center;
+    background-size: cover;
+}
+#toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1;
+  }
+  
+  /* Hidden class */
+  .hidden {
+    display: none;
+  }
